@@ -1,0 +1,35 @@
+{
+  "name": "ai-business-agent",
+  "version": "1.0.0",
+  "description": "A multi-channel AI customer-service platform designed to help businesses automate customer communication, support, and business operations.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hamid3400/AI-Business-Agent.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Hamid3400/AI-Business-Agent/issues"
+  },
+  "homepage": "https://github.com/Hamid3400/AI-Business-Agent#readme",
+  "dependencies": {
+    "@google/genai": "^2.22.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.7.0",
+    "helmet": "^8.3.0",
+    "pg": "^8.23.0",
+    "telegraf": "^4.16.3",
+    "twilio": "^6.1.1"
+  }
+}

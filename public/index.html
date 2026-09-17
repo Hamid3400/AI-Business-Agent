@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nova AI | Enterprise Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          colors: {
+            nova: { 500: '#D97706', 600: '#B45309' }, // Amber/Gold brand
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background-color: #020617; color: #F8FAFC; }
+    .glass { background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .message-enter { animation: slideIn 0.3s ease-out forwards; }
+    @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    
+    /* Animated Typing Dots */
+    .typing-dot { animation: typing 1.4s infinite ease-in-out both; }
+    .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+    .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+    @keyframes typing { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+  </style>
+</head>
+<body class="flex h-screen overflow-hidden">
+  
+  <!-- Desktop Sidebar -->
+  <aside class="w-64 glass hidden md:flex flex-col border-r border-slate-800">
+    <div class="p-6 border-b border-slate-800 flex items-center gap-3">
+      <div class="h-10 w-10 bg-gradient-to-br from-nova-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg shadow-nova-500/20">
+        <i class="fa-solid fa-utensils text-white"></i>
+      </div>
+      <div>
+        <h1 class="font-bold tracking-wide">Nova AI</h1>
+        <p class="text-xs text-emerald-400 font-medium"><i class="fa-solid fa-circle text-[8px] mr-1"></i>System Online</p>
+      </div>
+    </div>
+    <div class="p-4 flex-1">
+      <p class="text-xs text-slate-500 uppercase tracking-wider font-semibold mb-3">Dashboard</p>
+      <button class="w-full text-left p-3 rounded-lg bg-slate-800/80 text-sm text-slate-200 border border-slate-700/50 shadow-inner">
+        <i class="fa-regular fa-message mr-2 text-nova-500"></i> Live Orders
+      </button>
+    </div>
+    <div class="p-4 border-t border-slate-800 text-xs text-slate-500 text-center">
+      Powered by Gemini AI v2.0
+    </div>
+  </aside>
+
+  <!-- Main Chat Area -->
+  <main class="flex-1 flex flex-col relative h-full">
+    
+    <!-- Header -->
+    <header class="h-16 glass border-b border-slate-800 flex items-center justify-between px-4 md:px-6 z-10">
+      <h2 class="font-semibold text-lg flex items-center gap-2">
+        <i class="fa-solid fa-robot text-nova-500"></i> Agent Terminal
+      </h2>
+      <span class="px-3 py-1 rounded-full bg-slate-800/80 border border-slate-700 text-xs text-slate-300 font-medium shadow-sm">
+        Multi-Tenant Web UI
+      </span>
+    </header>
+
+    <!-- Chat History -->
+    <div id="chat-box" class="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 hide-scrollbar scroll-smooth">
+      <!-- Initial AI Message -->
+      <div class="flex gap-4 max-w-3xl message-enter">
+        <div class="h-10 w-10 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center shrink-0 shadow-lg">
+          <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Nova" alt="AI" class="h-8 w-8 rounded-full">
+        </div>
+        <div class="space-y-1">
+          <div class="flex items-center gap-2">
+            <span class="font-semibold text-sm">Nova AI</span>
+            <span class="text-xs text-slate-500">Agent</span>
+          </div>
+          <div class="glass p-4 rounded-2xl rounded-tl-none text-sm text-slate-200 leading-relaxed shadow-lg border-slate-700/50">
+            Welcome to the <strong>Nova Restaurant</strong> ordering system! 🍽️ <br><br>
+            I am your premium AI concierge. I can process your orders, check inventory, and handle payment details. How may I serve you today?
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input Area (Floating Snapchat/Telegram Style) -->
+    <div class="p-4 md:p-6 w-full max-w-4xl mx-auto bg-gradient-to-t from-[#020617] to-transparent">
+      
+      <!-- Suggestion Chips -->
+      <div class="flex gap-2 overflow-x-auto hide-scrollbar mb-4" id="suggestions">
+        <button type="button" onclick="window.sendQuickMessage('Show me the menu')" class="shrink-0 px-4 py-2 rounded-xl glass border-slate-700 hover:border-nova-500 hover:text-nova-500 transition-all text-sm flex items-center gap-2 shadow-sm cursor-pointer">
+          <i class="fa-solid fa-book-open"></i> View Menu
+        </button>
+        <button type="button" onclick="window.sendQuickMessage('I want to order 2 Chicken Burgers')" class="shrink-0 px-4 py-2 rounded-xl glass border-slate-700 hover:border-nova-500 hover:text-nova-500 transition-all text-sm flex items-center gap-2 shadow-sm cursor-pointer">
+          <i class="fa-solid fa-burger"></i> Order Burger
+        </button>
+        <button type="button" onclick="window.sendQuickMessage('What drinks do you have?')" class="shrink-0 px-4 py-2 rounded-xl glass border-slate-700 hover:border-nova-500 hover:text-nova-500 transition-all text-sm flex items-center gap-2 shadow-sm cursor-pointer">
+          <i class="fa-solid fa-martini-glass"></i> Drinks Menu
+        </button>
+      </div>
+
+      <!-- Snapchat/Telegram Style Floating Input Bar -->
+      <form id="chat-form" class="relative group">
+        <div class="absolute inset-0 bg-gradient-to-r from-nova-600 to-amber-500 rounded-full blur opacity-20 group-focus-within:opacity-40 transition-opacity duration-300"></div>
+        <div class="relative flex items-center bg-slate-900/90 border border-slate-700/80 rounded-full px-5 py-2 shadow-2xl backdrop-blur-md">
+          <input 
+            type="text" 
+            id="user-input" 
+            class="flex-1 bg-transparent py-2.5 text-slate-100 placeholder-slate-500 focus:outline-none text-sm"
+            placeholder="Send a message to Nova AI..." 
+            autocomplete="off" 
+            required 
+          />
+          <button 
+            type="submit" 
+            id="send-btn"
+            class="ml-3 h-10 w-10 min-w-[2.5rem] rounded-full bg-gradient-to-tr from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 flex items-center justify-center transition-all transform hover:scale-105 active:scale-95 disabled:opacity-40 disabled:scale-100 shadow-md shadow-amber-500/30 shrink-0 cursor-pointer"
+          >
+            <!-- Perfectly Centered Snapchat Style Send Arrow SVG -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-950 translate-x-[-1px]" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+            </svg>
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </main>
+  
+  <script src="/app.js"></script>
+</body>
+</html>
